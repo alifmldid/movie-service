@@ -43,7 +43,7 @@ func(repo *movieRepository) FindById(c context.Context, id int) (movie Movie, er
 }
 
 func(repo *movieRepository) Save(c context.Context, input Movie) (id int, err error){
-	err = repo.Conn.Save(&input).Error
+	err = repo.Conn.Create(&input).Error
 
 	if err != nil{
 		return 0, err
