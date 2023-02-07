@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
 )
 
 type MovieController interface{
@@ -63,8 +64,19 @@ func (controller *movieController) GetById(c *gin.Context){
 }
 
 func (controller *movieController) Add(c *gin.Context){
+	validate := validator.New()
+
 	var payload Movie
 	c.ShouldBindJSON(&payload)
+
+	err := validate.Struct(&payload)
+	if err != nil{
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+			"data": "",
+		})
+		return
+	}
 
 	movieID, err := controller.movieUsecase.Add(c, payload)
 
@@ -75,11 +87,9 @@ func (controller *movieController) Add(c *gin.Context){
 		})
 	}
 
-	type Movie struct{ID int `json:"id"`}
-
 	c.JSON(200, gin.H{
 		"message": "success",
-		"data": Movie{ID: movieID},
+		"data": struct{id int}{id: movieID},
 	})
 }
 
