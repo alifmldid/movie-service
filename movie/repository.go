@@ -53,7 +53,7 @@ func(repo *movieRepository) Save(c context.Context, input Movie) (id int, err er
 }
 
 func(repo *movieRepository) Update(c context.Context, id int, input Movie) (err error){
-	err = repo.Conn.Where("id = ?", id).Updates(&input).Error
+	err = repo.Conn.Save(&input).Error
 
 	return err
 }

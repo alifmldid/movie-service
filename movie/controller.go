@@ -32,6 +32,7 @@ func (controller *movieController) GetAll(c *gin.Context){
 			"message": err.Error(),
 			"data": "",
 		})
+		return
 	}
 
 	c.JSON(200, gin.H{
@@ -47,6 +48,7 @@ func (controller *movieController) GetById(c *gin.Context){
 			"message": err.Error(),
 			"data": "",
 		})
+		return
 	}
 	
 	movie, err := controller.movieUsecase.GetById(c, id)
@@ -55,6 +57,7 @@ func (controller *movieController) GetById(c *gin.Context){
 			"message": err.Error(),
 			"data": "",
 		})
+		return
 	}
 
 	c.JSON(200, gin.H{
@@ -85,11 +88,12 @@ func (controller *movieController) Add(c *gin.Context){
 			"message": err.Error(),
 			"data": "",
 		})
+		return
 	}
 
 	c.JSON(200, gin.H{
 		"message": "success",
-		"data": struct{id int}{id: movieID},
+		"data": movieID,
 	})
 }
 
@@ -103,6 +107,7 @@ func (controller *movieController) Update(c *gin.Context){
 			"message": err.Error(),
 			"data": "success",
 		})
+		return
 	}
 
 	err = controller.movieUsecase.Update(c, id, payload)
@@ -112,6 +117,7 @@ func (controller *movieController) Update(c *gin.Context){
 			"message": err.Error(),
 			"data": "",
 		})
+		return
 	}
 	
 	c.JSON(200, gin.H{
@@ -127,6 +133,7 @@ func (controller *movieController) Delete(c *gin.Context){
 			"message": err.Error(),
 			"data": "success",
 		})
+		return
 	}
 
 	err = controller.movieUsecase.Delete(c, id)
@@ -136,6 +143,7 @@ func (controller *movieController) Delete(c *gin.Context){
 			"message": err.Error(),
 			"data": "",
 		})
+		return
 	}
 	
 	c.JSON(200, gin.H{
